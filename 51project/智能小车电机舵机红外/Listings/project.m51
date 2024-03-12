@@ -1,0 +1,380 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/07/2023  21:02:38  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\project PRINT (.\Listings\project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?MAIN
+            IDATA   000DH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0008H     UNIT         ?PR?CARLM_GO?MAIN
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0079H     UNIT         ?PR?INFRARED_TRACKING?MAIN
+            CODE    0113H     0057H     UNIT         ?PR?TIMER0_ROUTINE?MAIN
+            CODE    016AH     0012H     UNIT         ?PR?TIMER0INIT?MAIN
+            CODE    017CH     000FH     UNIT         ?PR?CAR_STOP?MAIN
+            CODE    018BH     000FH     UNIT         ?PR?CAR_BACK?MAIN
+            CODE    019AH     000FH     UNIT         ?PR?CAR_GOLEFT?MAIN
+            CODE    01A9H     000FH     UNIT         ?PR?CAR_INPLACELEFT?MAIN
+            CODE    01B8H     000FH     UNIT         ?PR?CAR_INPLACERIGHT?MAIN
+            CODE    01C7H     000CH     UNIT         ?PR?CAR_GO?MAIN
+            CODE    01D3H     000CH     UNIT         ?PR?CAR_GORIGHT?MAIN
+            CODE    01DFH     000AH     UNIT         ?C_INITSEG
+            CODE    01E9H     0008H     UNIT         ?PR?MAIN?MAIN
+            CODE    01F1H     0005H     UNIT         ?PR?CARRM_GO?MAIN
+            CODE    01F6H     0005H     UNIT         ?PR?CARLM_BACK?MAIN
+            CODE    01FBH     0005H     UNIT         ?PR?CARRM_BACK?MAIN
+            CODE    0200H     0005H     UNIT         ?PR?CARLM_STOP?MAIN
+            CODE    0205H     0005H     UNIT         ?PR?CARRM_STOP?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\project (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 2
+
+
+
+?PR?MAIN?MAIN
+  +--> ?PR?TIMER0INIT?MAIN
+  +--> ?PR?INFRARED_TRACKING?MAIN
+
+?PR?INFRARED_TRACKING?MAIN
+  +--> ?PR?CAR_GO?MAIN
+  +--> ?PR?CAR_INPLACERIGHT?MAIN
+  +--> ?PR?CAR_INPLACELEFT?MAIN
+  +--> ?PR?CAR_GOLEFT?MAIN
+  +--> ?PR?CAR_GORIGHT?MAIN
+
+?PR?CAR_GO?MAIN
+  +--> ?PR?CARLM_GO?MAIN
+  +--> ?PR?CARRM_GO?MAIN
+
+?PR?CAR_INPLACERIGHT?MAIN
+  +--> ?PR?CARLM_GO?MAIN
+  +--> ?PR?CARRM_GO?MAIN
+
+?PR?CAR_INPLACELEFT?MAIN
+  +--> ?PR?CARLM_GO?MAIN
+  +--> ?PR?CARRM_GO?MAIN
+
+?PR?CAR_GOLEFT?MAIN
+  +--> ?PR?CARLM_GO?MAIN
+  +--> ?PR?CARRM_GO?MAIN
+
+?PR?CAR_GORIGHT?MAIN
+  +--> ?PR?CARLM_GO?MAIN
+  +--> ?PR?CARRM_GO?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0113H         PUBLIC        Timer0_Routine
+  D:0090H         PUBLIC        P1
+  D:0008H         PUBLIC        PWM_count
+  D:00A0H         PUBLIC        P2
+  D:0009H         PUBLIC        counter
+  C:01F6H         PUBLIC        carlm_back
+  B:00A0H.1       PUBLIC        EN1A
+  B:00A8H.7       PUBLIC        EA
+  B:00A0H.2       PUBLIC        EN2A
+  C:01FBH         PUBLIC        carrm_back
+  C:01D3H         PUBLIC        car_goright
+  C:01B8H         PUBLIC        car_inplaceright
+  C:019AH         PUBLIC        car_goleft
+  B:0090H.6       PUBLIC        right_light
+  C:01E9H         PUBLIC        main
+  C:01A9H         PUBLIC        car_inplaceleft
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 3
+
+
+  B:0090H.5       PUBLIC        left_light
+  C:018BH         PUBLIC        car_back
+  D:000AH         PUBLIC        count
+  D:000BH         PUBLIC        compareA
+  D:000CH         PUBLIC        compareB
+  D:0089H         PUBLIC        TMOD
+  C:0200H         PUBLIC        carlm_stop
+  C:0205H         PUBLIC        carrm_stop
+  B:0090H.1       PUBLIC        IN1
+  C:0006H         PUBLIC        carlm_go
+  B:0090H.2       PUBLIC        IN2
+  B:00A8H.1       PUBLIC        ET0
+  B:0090H.3       PUBLIC        IN3
+  B:0088H.5       PUBLIC        TF0
+  C:016AH         PUBLIC        Timer0Init
+  B:0090H.4       PUBLIC        IN4
+  D:008CH         PUBLIC        TH0
+  C:01F1H         PUBLIC        carrm_go
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:017CH         PUBLIC        car_stop
+  C:009AH         PUBLIC        Infrared_tracking
+  C:01C7H         PUBLIC        car_go
+  B:0090H.7       PUBLIC        middle_light
+  B:00A0H.0       PUBLIC        PWM
+  -------         PROC          TIMER0INIT
+  C:016AH         LINE#         42
+  C:016AH         LINE#         43
+  C:016AH         LINE#         44
+  C:016DH         LINE#         45
+  C:0170H         LINE#         46
+  C:0173H         LINE#         47
+  C:0175H         LINE#         48
+  C:0177H         LINE#         49
+  C:0179H         LINE#         50
+  C:017BH         LINE#         51
+  -------         ENDPROC       TIMER0INIT
+  -------         PROC          L?0037
+  -------         ENDPROC       L?0037
+  -------         PROC          CARLM_GO
+  C:0006H         LINE#         52
+  C:0006H         LINE#         53
+  C:0006H         LINE#         54
+  C:0008H         LINE#         55
+  C:000AH         LINE#         56
+  -------         ENDPROC       CARLM_GO
+  -------         PROC          CARRM_GO
+  C:01F1H         LINE#         57
+  C:01F1H         LINE#         58
+  C:01F1H         LINE#         59
+  C:01F3H         LINE#         60
+  C:01F5H         LINE#         61
+  -------         ENDPROC       CARRM_GO
+  -------         PROC          CARLM_BACK
+  C:01F6H         LINE#         62
+  C:01F6H         LINE#         63
+  C:01F6H         LINE#         64
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 4
+
+
+  C:01F8H         LINE#         65
+  C:01FAH         LINE#         66
+  -------         ENDPROC       CARLM_BACK
+  -------         PROC          CARRM_BACK
+  C:01FBH         LINE#         67
+  C:01FBH         LINE#         68
+  C:01FBH         LINE#         69
+  C:01FDH         LINE#         70
+  C:01FFH         LINE#         71
+  -------         ENDPROC       CARRM_BACK
+  -------         PROC          CARLM_STOP
+  C:0200H         LINE#         72
+  C:0200H         LINE#         73
+  C:0200H         LINE#         74
+  C:0202H         LINE#         75
+  C:0204H         LINE#         76
+  -------         ENDPROC       CARLM_STOP
+  -------         PROC          CARRM_STOP
+  C:0205H         LINE#         77
+  C:0205H         LINE#         78
+  C:0205H         LINE#         79
+  C:0207H         LINE#         80
+  C:0209H         LINE#         81
+  -------         ENDPROC       CARRM_STOP
+  -------         PROC          CAR_GO
+  C:01C7H         LINE#         82
+  C:01C7H         LINE#         83
+  C:01C7H         LINE#         84
+  C:01CAH         LINE#         85
+  C:01CDH         LINE#         86
+  C:01CDH         LINE#         87
+  C:01D0H         LINE#         88
+  -------         ENDPROC       CAR_GO
+  -------         PROC          CAR_STOP
+  C:017CH         LINE#         90
+  C:017CH         LINE#         91
+  C:017CH         LINE#         92
+  C:017FH         LINE#         93
+  C:0182H         LINE#         94
+  C:0185H         LINE#         95
+  C:0188H         LINE#         96
+  -------         ENDPROC       CAR_STOP
+  -------         PROC          CAR_BACK
+  C:018BH         LINE#         98
+  C:018BH         LINE#         99
+  C:018BH         LINE#         100
+  C:018EH         LINE#         101
+  C:0191H         LINE#         102
+  C:0194H         LINE#         103
+  C:0197H         LINE#         104
+  -------         ENDPROC       CAR_BACK
+  -------         PROC          CAR_GORIGHT
+  C:01D3H         LINE#         106
+  C:01D3H         LINE#         107
+  C:01D3H         LINE#         108
+  C:01D6H         LINE#         109
+  C:01D9H         LINE#         110
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 5
+
+
+  C:01D9H         LINE#         111
+  C:01DCH         LINE#         112
+  -------         ENDPROC       CAR_GORIGHT
+  -------         PROC          CAR_GOLEFT
+  C:019AH         LINE#         114
+  C:019AH         LINE#         115
+  C:019AH         LINE#         116
+  C:019DH         LINE#         117
+  C:01A0H         LINE#         118
+  C:01A3H         LINE#         119
+  C:01A6H         LINE#         120
+  -------         ENDPROC       CAR_GOLEFT
+  -------         PROC          CAR_INPLACELEFT
+  C:01A9H         LINE#         121
+  C:01A9H         LINE#         122
+  C:01A9H         LINE#         123
+  C:01ACH         LINE#         124
+  C:01AFH         LINE#         125
+  C:01B2H         LINE#         126
+  C:01B5H         LINE#         127
+  -------         ENDPROC       CAR_INPLACELEFT
+  -------         PROC          CAR_INPLACERIGHT
+  C:01B8H         LINE#         129
+  C:01B8H         LINE#         130
+  C:01B8H         LINE#         131
+  C:01BBH         LINE#         132
+  C:01BEH         LINE#         133
+  C:01C1H         LINE#         134
+  C:01C4H         LINE#         135
+  -------         ENDPROC       CAR_INPLACERIGHT
+  -------         PROC          INFRARED_TRACKING
+  C:009AH         LINE#         137
+  C:009AH         LINE#         138
+  C:009AH         LINE#         139
+  C:00A3H         LINE#         140
+  C:00A3H         LINE#         141
+  C:00A6H         LINE#         142
+  C:00A6H         LINE#         143
+  C:00AFH         LINE#         144
+  C:00AFH         LINE#         145
+  C:00B2H         LINE#         146
+  C:00B2H         LINE#         147
+  C:00BBH         LINE#         148
+  C:00BBH         LINE#         149
+  C:00BEH         LINE#         150
+  C:00C7H         LINE#         151
+  C:00C7H         LINE#         152
+  C:00CAH         LINE#         153
+  C:00CAH         LINE#         154
+  C:00CAH         LINE#         156
+  C:00D3H         LINE#         157
+  C:00D3H         LINE#         158
+  C:00D6H         LINE#         159
+  C:00DFH         LINE#         160
+  C:00DFH         LINE#         161
+  C:00E2H         LINE#         162
+  C:00E2H         LINE#         163
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 6
+
+
+  C:00E2H         LINE#         164
+  C:00EBH         LINE#         165
+  C:00EBH         LINE#         166
+  C:00EEH         LINE#         167
+  C:00F7H         LINE#         168
+  C:00F7H         LINE#         169
+  C:00FAH         LINE#         170
+  C:00FAH         LINE#         172
+  C:00FAH         LINE#         173
+  C:0103H         LINE#         174
+  C:0103H         LINE#         175
+  C:0106H         LINE#         176
+  C:010FH         LINE#         177
+  C:010FH         LINE#         178
+  C:0112H         LINE#         179
+  C:0112H         LINE#         181
+  C:0112H         LINE#         183
+  -------         ENDPROC       INFRARED_TRACKING
+  -------         PROC          MAIN
+  C:01E9H         LINE#         185
+  C:01E9H         LINE#         186
+  C:01E9H         LINE#         187
+  C:01ECH         LINE#         189
+  C:01ECH         LINE#         190
+  C:01ECH         LINE#         191
+  C:01EFH         LINE#         192
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0_ROUTINE
+  C:0113H         LINE#         194
+  C:0119H         LINE#         196
+  C:011CH         LINE#         197
+  C:011FH         LINE#         198
+  C:0122H         LINE#         199
+  C:0125H         LINE#         200
+  C:0127H         LINE#         201
+  C:012EH         LINE#         202
+  C:012EH         LINE#         203
+  C:0131H         LINE#         204
+  C:0131H         LINE#         205
+  C:0138H         LINE#         206
+  C:0138H         LINE#         207
+  C:013AH         LINE#         209
+  C:013CH         LINE#         211
+  C:013CH         LINE#         212
+  C:013EH         LINE#         214
+  C:013EH         LINE#         215
+  C:0145H         LINE#         216
+  C:0145H         LINE#         217
+  C:0147H         LINE#         219
+  C:0149H         LINE#         221
+  C:0149H         LINE#         222
+  C:014BH         LINE#         224
+  C:014BH         LINE#         225
+  C:014DH         LINE#         226
+  C:0156H         LINE#         227
+  C:015DH         LINE#         228
+  C:015DH         LINE#         229
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2023  21:02:38  PAGE 7
+
+
+  C:015FH         LINE#         230
+  C:0161H         LINE#         232
+  C:0161H         LINE#         233
+  C:0163H         LINE#         234
+  C:0163H         LINE#         235
+  -------         ENDPROC       TIMER0_ROUTINE
+  -------         ENDMOD        MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CAR_STOP?MAIN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?CAR_BACK?MAIN
+
+Program Size: data=14.0 xdata=0 code=522
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

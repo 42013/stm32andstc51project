@@ -1,0 +1,3 @@
+".\Objects\carfllow.obj" 
+TO ".\Objects\018" 
+PRINT(".\Listings\018.m51") RAMSIZE(256) 

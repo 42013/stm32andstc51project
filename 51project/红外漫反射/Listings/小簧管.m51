@@ -1,0 +1,350 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/10/2023  21:59:13  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\XHG.obj TO .\Objects\小簧管 PRINT (.\Listings\小簧管.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\XHG.obj (XHG)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\小簧管 (XHG)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         ?DT?XHG
+            IDATA   000EH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     000DH     UNIT         ?C_INITSEG
+            CODE    001BH     0003H     ABSOLUTE     
+            CODE    001EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    00AAH     0079H     UNIT         ?PR?TRACINGMODE?XHG
+            CODE    0123H     002DH     UNIT         ?PR?TIME1_INIT?XHG
+            CODE    0150H     002CH     UNIT         ?PR?TIME0_INIT?XHG
+            CODE    017CH     001BH     UNIT         ?PR?AVOID?XHG
+            CODE    0197H     0014H     UNIT         ?PR?_DELAY?XHG
+            CODE    01ABH     0013H     UNIT         ?PR?TIMER0_INIT?XHG
+            CODE    01BEH     0012H     UNIT         ?PR?GOFORWARD?XHG
+            CODE    01D0H     0012H     UNIT         ?PR?GORIGHT?XHG
+            CODE    01E2H     0012H     UNIT         ?PR?GOLEFT?XHG
+            CODE    01F4H     0012H     UNIT         ?PR?PUTLEFT?XHG
+            CODE    0206H     0012H     UNIT         ?PR?PUTRIGHT?XHG
+            CODE    0218H     000FH     UNIT         ?PR?TIMER1_INIT?XHG
+            CODE    0227H     000EH     UNIT         ?PR?MAIN?XHG
+            CODE    0235H     000CH     UNIT         ?PR?GOSTOP?XHG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\小簧管 (XHG)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?XHG
+  +--> ?C_INITSEG
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2023  21:59:13  PAGE 2
+
+
+?PR?MAIN?XHG
+  +--> ?PR?TIMER0_INIT?XHG
+  +--> ?PR?TIMER1_INIT?XHG
+  +--> ?PR?TRACINGMODE?XHG
+  +--> ?PR?AVOID?XHG
+
+?PR?TRACINGMODE?XHG
+  +--> ?PR?GOFORWARD?XHG
+  +--> ?PR?PUTLEFT?XHG
+  +--> ?PR?PUTRIGHT?XHG
+  +--> ?PR?GOLEFT?XHG
+  +--> ?PR?GORIGHT?XHG
+
+?PR?AVOID?XHG
+  +--> ?PR?GOSTOP?XHG
+  +--> ?PR?_DELAY?XHG
+  +--> ?PR?PUTLEFT?XHG
+  +--> ?PR?GOFORWARD?XHG
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\小簧管 (XHG)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        XHG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:01E2H         PUBLIC        goleft
+  D:0008H         PUBLIC        counter
+  B:00A8H.7       PUBLIC        EA
+  C:01F4H         PUBLIC        putleft
+  D:0009H         PUBLIC        pwm_left_val
+  D:00A8H         PUBLIC        IE
+  C:0197H         PUBLIC        _delay
+  C:017CH         PUBLIC        avoid
+  D:00B8H         PUBLIC        IP
+  B:0090H.6       PUBLIC        right_light
+  C:0235H         PUBLIC        gostop
+  C:0227H         PUBLIC        main
+  B:0090H.5       PUBLIC        left_light
+  D:000AH         PUBLIC        pwm_t
+  C:01ABH         PUBLIC        Timer0_Init
+  C:0218H         PUBLIC        Timer1_Init
+  D:000BH         PUBLIC        count
+  C:01BEH         PUBLIC        goForward
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0150H         PUBLIC        Time0_Init
+  C:0123H         PUBLIC        Time1_Init
+  B:0090H.0       PUBLIC        xhg
+  B:0090H.1       PUBLIC        IN1
+  B:0090H.2       PUBLIC        IN2
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2023  21:59:13  PAGE 3
+
+
+  B:00A8H.1       PUBLIC        ET0
+  B:0090H.3       PUBLIC        IN3
+  B:00A8H.3       PUBLIC        ET1
+  B:0090H.4       PUBLIC        IN4
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  B:00A0H.1       PUBLIC        ENA
+  D:000CH         PUBLIC        timer1
+  B:00A0H.2       PUBLIC        ENB
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.7       PUBLIC        middle_light
+  C:00AAH         PUBLIC        tracingMode
+  B:00A0H.0       PUBLIC        PWM
+  C:01D0H         PUBLIC        goright
+  D:00D0H         PUBLIC        PSW
+  C:0206H         PUBLIC        putright
+  D:000DH         PUBLIC        pwm_right_val
+  -------         PROC          TIMER0_INIT
+  C:01ABH         LINE#         33
+  C:01ABH         LINE#         34
+  C:01ABH         LINE#         35
+  C:01AEH         LINE#         36
+  C:01B1H         LINE#         38
+  C:01B4H         LINE#         39
+  C:01B7H         LINE#         41
+  C:01B9H         LINE#         42
+  C:01BBH         LINE#         43
+  C:01BDH         LINE#         44
+  -------         ENDPROC       TIMER0_INIT
+  -------         PROC          TIME0_INIT
+  C:0150H         LINE#         45
+  C:0154H         LINE#         47
+  C:0156H         LINE#         48
+  C:0159H         LINE#         49
+  C:015CH         LINE#         51
+  C:0163H         LINE#         52
+  C:0163H         LINE#         53
+  C:0165H         LINE#         54
+  C:0167H         LINE#         56
+  C:0167H         LINE#         57
+  C:0169H         LINE#         58
+  C:0169H         LINE#         59
+  C:016BH         LINE#         60
+  C:0172H         LINE#         61
+  C:0172H         LINE#         62
+  C:0175H         LINE#         63
+  C:0175H         LINE#         64
+  C:0177H         LINE#         65
+  -------         ENDPROC       TIME0_INIT
+  -------         PROC          TIMER1_INIT
+  C:0218H         LINE#         67
+  C:0218H         LINE#         68
+  C:0218H         LINE#         76
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2023  21:59:13  PAGE 4
+
+
+  C:021BH         LINE#         77
+  C:021EH         LINE#         78
+  C:0220H         LINE#         79
+  C:0222H         LINE#         80
+  C:0224H         LINE#         81
+  C:0226H         LINE#         82
+  -------         ENDPROC       TIMER1_INIT
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0197H         LINE#         93
+  C:0197H         LINE#         94
+  C:0197H         LINE#         96
+  C:01A1H         LINE#         97
+  C:01A1H         LINE#         98
+  C:01A2H         LINE#         99
+  C:01A4H         LINE#         100
+  C:01AAH         LINE#         102
+  -------         ENDPROC       _DELAY
+  -------         PROC          GOFORWARD
+  C:01BEH         LINE#         106
+  C:01BEH         LINE#         107
+  C:01BEH         LINE#         108
+  C:01C2H         LINE#         109
+  C:01C6H         LINE#         110
+  C:01C9H         LINE#         111
+  C:01CCH         LINE#         112
+  C:01CFH         LINE#         113
+  -------         ENDPROC       GOFORWARD
+  -------         PROC          GOSTOP
+  C:0235H         LINE#         130
+  C:0235H         LINE#         131
+  C:0235H         LINE#         132
+  C:0239H         LINE#         133
+  C:023DH         LINE#         134
+  C:0240H         LINE#         135
+  -------         ENDPROC       GOSTOP
+  -------         PROC          GORIGHT
+  C:01D0H         LINE#         136
+  C:01D0H         LINE#         137
+  C:01D4H         LINE#         138
+  C:01D8H         LINE#         139
+  C:01DBH         LINE#         140
+  C:01DEH         LINE#         141
+  C:01E1H         LINE#         142
+  -------         ENDPROC       GORIGHT
+  -------         PROC          GOLEFT
+  C:01E2H         LINE#         143
+  C:01E2H         LINE#         144
+  C:01E6H         LINE#         145
+  C:01EAH         LINE#         146
+  C:01EDH         LINE#         147
+  C:01F0H         LINE#         148
+  C:01F3H         LINE#         149
+  -------         ENDPROC       GOLEFT
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2023  21:59:13  PAGE 5
+
+
+  -------         PROC          PUTLEFT
+  C:01F4H         LINE#         150
+  C:01F4H         LINE#         151
+  C:01F8H         LINE#         152
+  C:01FCH         LINE#         153
+  C:01FFH         LINE#         154
+  C:0202H         LINE#         155
+  C:0205H         LINE#         156
+  -------         ENDPROC       PUTLEFT
+  -------         PROC          PUTRIGHT
+  C:0206H         LINE#         157
+  C:0206H         LINE#         158
+  C:020AH         LINE#         159
+  C:020EH         LINE#         160
+  C:0211H         LINE#         161
+  C:0214H         LINE#         162
+  C:0217H         LINE#         163
+  -------         ENDPROC       PUTRIGHT
+  -------         PROC          TRACINGMODE
+  C:00AAH         LINE#         164
+  C:00AAH         LINE#         165
+  C:00AAH         LINE#         166
+  C:00B3H         LINE#         167
+  C:00B3H         LINE#         168
+  C:00B6H         LINE#         169
+  C:00B6H         LINE#         170
+  C:00BFH         LINE#         171
+  C:00BFH         LINE#         172
+  C:00C2H         LINE#         173
+  C:00C2H         LINE#         174
+  C:00CBH         LINE#         175
+  C:00CBH         LINE#         176
+  C:00CEH         LINE#         177
+  C:00D7H         LINE#         178
+  C:00D7H         LINE#         179
+  C:00DAH         LINE#         180
+  C:00DAH         LINE#         181
+  C:00DAH         LINE#         183
+  C:00E3H         LINE#         184
+  C:00E3H         LINE#         185
+  C:00E6H         LINE#         186
+  C:00EFH         LINE#         187
+  C:00EFH         LINE#         188
+  C:00F2H         LINE#         189
+  C:00F2H         LINE#         190
+  C:00F2H         LINE#         191
+  C:00FBH         LINE#         192
+  C:00FBH         LINE#         193
+  C:00FEH         LINE#         194
+  C:0107H         LINE#         195
+  C:0107H         LINE#         196
+  C:010AH         LINE#         197
+  C:010AH         LINE#         198
+  C:010AH         LINE#         199
+  C:0113H         LINE#         200
+  C:0113H         LINE#         201
+  C:0116H         LINE#         203
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/10/2023  21:59:13  PAGE 6
+
+
+  C:011FH         LINE#         204
+  C:011FH         LINE#         205
+  C:0122H         LINE#         206
+  C:0122H         LINE#         207
+  C:0122H         LINE#         208
+  -------         ENDPROC       TRACINGMODE
+  -------         PROC          AVOID
+  C:017CH         LINE#         209
+  C:017CH         LINE#         210
+  C:017FH         LINE#         211
+  C:017FH         LINE#         212
+  C:0182H         LINE#         213
+  C:0189H         LINE#         214
+  C:018CH         LINE#         215
+  C:0193H         LINE#         216
+  C:0196H         LINE#         217
+  C:0196H         LINE#         218
+  -------         ENDPROC       AVOID
+  -------         PROC          MAIN
+  C:0227H         LINE#         219
+  C:0227H         LINE#         220
+  C:0227H         LINE#         221
+  C:022AH         LINE#         222
+  C:022DH         LINE#         223
+  C:022DH         LINE#         224
+  C:0230H         LINE#         225
+  C:0233H         LINE#         226
+  -------         ENDPROC       MAIN
+  -------         PROC          TIME1_INIT
+  C:0123H         LINE#         229
+  C:0127H         LINE#         231
+  C:0129H         LINE#         232
+  C:012CH         LINE#         233
+  C:012FH         LINE#         234
+  C:0131H         LINE#         235
+  C:0136H         LINE#         236
+  C:013DH         LINE#         237
+  C:0142H         LINE#         238
+  C:0144H         LINE#         239
+  C:0149H         LINE#         240
+  C:014BH         LINE#         241
+  -------         ENDPROC       TIME1_INIT
+  -------         ENDMOD        XHG
+
+Program Size: data=15.0 xdata=0 code=569
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\button.obj" 
+TO ".\Objects\按键布局" 
+PRINT(".\Listings\按键布局.m51") RAMSIZE(256) 

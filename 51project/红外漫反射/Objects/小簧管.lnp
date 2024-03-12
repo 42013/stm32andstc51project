@@ -1,0 +1,3 @@
+".\Objects\XHG.obj" 
+TO ".\Objects\小簧管" 
+PRINT(".\Listings\小簧管.m51") RAMSIZE(256) 

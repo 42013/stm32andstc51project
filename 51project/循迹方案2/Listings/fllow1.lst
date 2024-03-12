@@ -1,0 +1,277 @@
+C51 COMPILER V9.54   FLLOW1                                                                04/06/2023 22:04:30 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE FLLOW1
+OBJECT MODULE PLACED IN .\Objects\fllow1.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE fllow1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\fllo
+                    -w1.lst) TABS(2) OBJECT(.\Objects\fllow1.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include <intrins.h>
+   3          
+   4          sfr AUXR=0x80;
+   5          sbit IN1 = P1^1;
+   6          sbit IN2 = P1^2;
+   7          sbit IN3 = P1^3;
+   8          sbit IN4 = P1^4;
+   9          sbit ENA  =P2^1;
+  10          sbit ENB  =P2^2;
+  11          sbit tracingLeft = P1^5;
+  12          sbit tracingRight = P1^6;
+  13          sbit tracingModile=P1^7;
+  14          sbit PWM = P2^0;  //设定PWM输出的I/O端口(舵机)
+  15          
+  16          unsigned char pwm_left=210;
+  17          unsigned char pwm_right=210;
+  18          unsigned char pwm_t;
+  19          unsigned char count = 0;
+  20          unsigned char timer1;
+  21          unsigned char timer2; 
+  22          char leftSpeed;
+  23          char rightSpeed;
+  24          int cntLeft = 0;
+  25          int cntRight = 0;
+  26          int cnt = 0;
+  27          
+  28          /*
+  29          对于180°舵机
+  30          t = 0.5ms——————-舵机会转动 0 ° 
+  31          t = 1.0ms——————-舵机会转动 45°
+  32          t = 1.5ms——————-舵机会转动 90°
+  33          t = 2.0ms——————-舵机会转动 135°
+  34          t = 2.5ms——————-舵机会转动 180°
+  35          */
+  36          
+  37          void Timer0_Init()    //100微秒@12.000MHz
+  38          {
+  39   1        AUXR |= 0x80;   //定时器时钟1T模式
+  40   1        TMOD &= 0xF0;   //设置定时器模式
+  41   1        TL0 = 0x50;   //设置定时初值
+  42   1        TH0 = 0xFB;   //设置定时初值
+  43   1        TF0 = 0;    //清除TF0标志
+  44   1        TR0 = 1;    //定时器0开始计时
+  45   1      }
+  46          /*void Timer0_Init()           
+  47          {
+  48              TMOD &= 0x00;
+  49              TMOD |= 0x01; //定时器T0设置成方式1
+  50           
+  51              TH0 = 0xff;   //定时常数 0.1ms 晶振为11.0592MHz
+  52              TL0 = 0xa4;
+  53           
+  54              ET0 = 1;      
+C51 COMPILER V9.54   FLLOW1                                                                04/06/2023 22:04:30 PAGE 2   
+
+  55              TR0 = 1; 
+  56              EA=1; 
+  57            }*/
+  58          void Time0Init() interrupt 1 
+  59          {
+  60   1        TR0 = 0; 
+  61   1        TL0 = 0x50;   //设置定时初值
+  62   1        TH0 = 0xFB;   //设置定时初值
+  63   1        if(count <= timer1) //5==0° 15==90°
+  64   1        { 
+  65   2          PWM = 1; 
+  66   2        }
+  67   1        else 
+  68   1        { 
+  69   2          PWM = 0; 
+  70   2        }
+  71   1        count++;
+  72   1        if (count >= 200) //T = 20ms清零
+  73   1        { 
+  74   2          count = 0; 
+  75   2        }
+  76   1        TR0 = 1; //开启T0
+  77   1      }
+  78          void Timer1_Init(void)    //100微秒@11.0592MHz
+  79          {
+  80   1        AUXR |= 0x40;   //定时器时钟1T模式
+  81   1        TMOD &= 0x0F;   //设置定时器模式
+  82   1        TL1 = 0xAE;   //设置定时初值
+  83   1        TH1 = 0xFB;   //设置定时初值
+  84   1        TF1 = 0;    //清除TF1标志
+  85   1        TR1 = 1;    //定时器1开始计时
+  86   1      }
+  87          
+  88           /*void Timer1_Init()   //100微秒@12.000MHz
+  89          {
+  90            TMOD &= 0x0F;   //设置定时器模式
+  91            TL1 = 0x50;   //设置定时初值
+  92            TH1 = 0xFB;   //设置定时初值
+  93            TF1 = 0;     //清除TF1标志
+  94            TR1 = 1;    //定时器1开始计时
+  95          }*/
+  96          
+  97          /*延时程序*/
+  98          void delay1s()   //误差 0us
+  99          {
+ 100   1          unsigned char a,b,c;
+ 101   1          for(c=167;c>0;c--)
+ 102   1              for(b=171;b>0;b--)
+ 103   1                  for(a=16;a>0;a--);
+ 104   1          _nop_();  //if Keil,require use intrins.h
+ 105   1      }
+ 106           /*void delay(unsigned int xms)   //@12.000MHz
+ 107          { 
+ 108            unsigned char i;
+ 109            while(xms--)
+ 110            {
+ 111            _nop_();
+ 112            i = 2;
+ 113            while (--i);
+ 114            }
+ 115          }*/
+ 116          
+C51 COMPILER V9.54   FLLOW1                                                                04/06/2023 22:04:30 PAGE 3   
+
+ 117          /*定时器T0初始化*/
+ 118          
+ 119          void sg90Left()
+ 120          {
+ 121   1        timer1= 18;  
+ 122   1        if(timer2 != timer1){  
+ 123   2          cnt = 0;
+ 124   2        }
+ 125   1        timer2 = timer1;
+ 126   1        delay1s();
+ 127   1      } 
+ 128           
+ 129          void sg90Middle()
+ 130          {
+ 131   1        timer1=5;
+ 132   1        if(timer2 != timer1){  
+ 133   2          cnt = 0;
+ 134   2        }
+ 135   1        timer2 = timer1;
+ 136   1        delay1s();
+ 137   1      } 
+ 138           
+ 139          void sg90Right()
+ 140          {
+ 141   1        timer1=8;
+ 142   1        if(timer2 != timer1){  
+ 143   2          cnt = 0;
+ 144   2        }
+ 145   1        timer2 = timer1;
+ 146   1        delay1s();
+ 147   1      } 
+ 148          
+ 149          void goForward()
+ 150          {
+ 151   1          IN1= 0;  IN2=1;
+ 152   1          IN3 = 1;  IN4=0;
+ 153   1      }
+ 154          
+ 155          void gostop()
+ 156          {
+ 157   1        IN1= 0;  IN2=0;
+ 158   1          IN3 = 1;  IN4=1;
+ 159   1      }
+ 160          
+ 161           void goForwardup()
+ 162          {
+ 163   1        leftSpeed = 16;
+ 164   1        rightSpeed = 24;
+ 165   1      }
+ 166          void tracingMode()
+ 167          { 
+ 168   1        if(tracingLeft == 0 && tracingRight == 0){  //
+ 169   2          goForward();
+ 170   2          goForwardup();
+ 171   2          sg90Middle();//舵机恢复到0°的位置
+ 172   2          count=0;//让定时器重新计数
+ 173   2        }
+ 174   1       
+ 175   1        if(tracingLeft == 0 && tracingRight == 1){
+ 176   2          goForward();
+ 177   2          goForwardup();;
+ 178   2          if(tracingModile==0){
+C51 COMPILER V9.54   FLLOW1                                                                04/06/2023 22:04:30 PAGE 4   
+
+ 179   3          sg90Right();
+ 180   3          count=0;
+ 181   3          }else{
+ 182   3            goForwardup();
+ 183   3          goForward();
+ 184   3          sg90Middle();//舵机恢复到0°的位置
+ 185   3          count=0;//让定时器重新计数
+ 186   3          }
+ 187   2        }
+ 188   1       
+ 189   1        if(tracingLeft == 1 && tracingRight == 0){
+ 190   2          goForward();
+ 191   2          goForwardup();
+ 192   2          if(tracingModile==0){
+ 193   3          sg90Left();
+ 194   3            count=0;
+ 195   3          }else{
+ 196   3          goForward();
+ 197   3          goForwardup();
+ 198   3          sg90Middle();
+ 199   3          count=0;//让定时器重新计数
+ 200   3          }
+ 201   2        }
+ 202   1       
+ 203   1        if(tracingLeft == 1 && tracingRight == 1){
+ 204   2          if(tracingModile==0){
+ 205   3          gostop();
+ 206   3          timer1 =5;//舵机恢复到0°的位置
+ 207   3          count=0;//让定时器重新计数
+ 208   3          }else{
+ 209   3          goForward();
+ 210   3          goForwardup();
+ 211   3          timer1 =5;//舵机恢复到0°的位置
+ 212   3          count=0;//让定时器重新计数
+ 213   3          }
+ 214   2        }
+ 215   1      }
+ 216          void main()
+ 217          {
+ 218   1        Timer0_Init();
+ 219   1        Timer1_Init();
+ 220   1        while(1){
+ 221   2          goForward();
+ 222   2          tracingMode();
+ 223   2          goForwardup();
+ 224   2        }
+ 225   1      }
+ 226          void Time1Handler() interrupt 3
+ 227          {
+ 228   1        TL1 = 0x50;   //设置定时初值
+ 229   1        TH1 = 0xFB;   //设置定时初值
+ 230   1          pwm_t++;
+ 231   1          if(pwm_t==255)
+ 232   1              pwm_t=ENA=ENB=0;
+ 233   1          if(pwm_left==pwm_t)
+ 234   1          {
+ 235   2              ENA=1;
+ 236   2          }else{
+ 237   2            ENA=0;
+ 238   2          }
+ 239   1          if(pwm_right==pwm_t){
+ 240   2              ENB=1;
+C51 COMPILER V9.54   FLLOW1                                                                04/06/2023 22:04:30 PAGE 5   
+
+ 241   2          }else{
+ 242   2          ENB=0;
+ 243   2          }
+ 244   1        }
+ 245           //可将循迹函数改为两部分，调试正常后再修改
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    351    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

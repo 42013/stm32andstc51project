@@ -1,0 +1,3 @@
+".\Objects\LAN.obj" 
+TO ".\Objects\012" 
+PRINT(".\Listings\012.m51") RAMSIZE(256) 

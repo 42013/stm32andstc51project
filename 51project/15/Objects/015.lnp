@@ -1,0 +1,3 @@
+".\Objects\NIXIE.obj" 
+TO ".\Objects\015" 
+PRINT(".\Listings\015.m51") RAMSIZE(256) 

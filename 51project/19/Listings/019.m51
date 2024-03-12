@@ -1,0 +1,255 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/02/2023  09:15:32  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\carangle.obj TO .\Objects\019 PRINT (.\Listings\019.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\carangle.obj (CARANGLE)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\019 (CARANGLE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?CARANGLE
+            IDATA   0010H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0007H     UNIT         ?PR?GOFORWARDUP?CARANGLE
+                    000AH     0001H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+* OVERLAP * CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     007AH     UNIT         ?PR?TIME1HANDLER?CARANGLE
+            CODE    0114H     002CH     UNIT         ?PR?TIME0INIT?CARANGLE
+            CODE    0140H     0026H     UNIT         ?PR?MAIN?CARANGLE
+            CODE    0166H     0013H     UNIT         ?PR?DELAY1S?CARANGLE
+            CODE    0179H     0011H     UNIT         ?PR?TIMER0_INIT?CARANGLE
+            CODE    018AH     000EH     UNIT         ?PR?TIMER1INIT?CARANGLE
+            CODE    0198H     000CH     UNIT         ?C_INITSEG
+            CODE    01A4H     0005H     UNIT         ?PR?GOFORWARD?CARANGLE
+            CODE    01A9H     0005H     UNIT         ?PR?GOSTOP?CARANGLE
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\019 (CARANGLE)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIME1HANDLER?CARANGLE
+  +--> ?PR?GOFORWARD?CARANGLE
+  +--> ?PR?GOSTOP?CARANGLE
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?CARANGLE
+  +--> ?C_INITSEG
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/02/2023  09:15:32  PAGE 2
+
+
+
+?PR?MAIN?CARANGLE
+  +--> ?PR?TIMER0_INIT?CARANGLE
+  +--> ?PR?TIMER1INIT?CARANGLE
+  +--> ?PR?GOFORWARDUP?CARANGLE
+  +--> ?PR?DELAY1S?CARANGLE
+  +--> ?PR?GOSTOP?CARANGLE
+
+?PR?DELAY1S?CARANGLE
+  +--> ?PR?GOFORWARDUP?CARANGLE
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\019 (CARANGLE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CARANGLE
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:009AH         PUBLIC        Time1Handler
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        rightSpeed
+  C:0003H         PUBLIC        goForwardup
+  D:00B8H         PUBLIC        IP
+  C:01A9H         PUBLIC        gostop
+  D:0009H         PUBLIC        leftSpeed
+  C:0140H         PUBLIC        main
+  C:0179H         PUBLIC        Timer0_Init
+  D:000AH         PUBLIC        count
+  C:01A4H         PUBLIC        goForward
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:0090H.3       PUBLIC        right_con1A
+  C:016BH         PUBLIC        delay1s
+  D:0080H         PUBLIC        AUXR
+  B:0090H.1       PUBLIC        left_con1A
+  D:000BH         PUBLIC        cntRight
+  B:0088H.5       PUBLIC        TF0
+  B:0088H.7       PUBLIC        TF1
+  C:018AH         PUBLIC        Timer1Init
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  D:000DH         PUBLIC        cntLeft
+  D:000FH         PUBLIC        timer1
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  C:0114H         PUBLIC        Time0Init
+  D:00C8H         PUBLIC        T2CON
+  B:00B0H.7       PUBLIC        PWM
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          TIMER0_INIT
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/02/2023  09:15:32  PAGE 3
+
+
+  C:0179H         LINE#         25
+  C:0179H         LINE#         26
+  C:0179H         LINE#         27
+  C:017CH         LINE#         28
+  C:017FH         LINE#         29
+  C:0182H         LINE#         30
+  C:0185H         LINE#         31
+  C:0187H         LINE#         32
+  C:0189H         LINE#         33
+  -------         ENDPROC       TIMER0_INIT
+  -------         PROC          TIME0INIT
+  C:0114H         LINE#         34
+  C:0118H         LINE#         36
+  C:011AH         LINE#         37
+  C:011DH         LINE#         38
+  C:0120H         LINE#         39
+  C:0127H         LINE#         40
+  C:0127H         LINE#         41
+  C:0129H         LINE#         42
+  C:012BH         LINE#         44
+  C:012BH         LINE#         45
+  C:012DH         LINE#         46
+  C:012DH         LINE#         47
+  C:012FH         LINE#         48
+  C:0136H         LINE#         49
+  C:0136H         LINE#         51
+  C:0139H         LINE#         52
+  C:0139H         LINE#         53
+  C:013BH         LINE#         54
+  -------         ENDPROC       TIME0INIT
+  -------         PROC          TIMER1INIT
+  C:018AH         LINE#         56
+  C:018AH         LINE#         57
+  C:018AH         LINE#         58
+  C:018DH         LINE#         59
+  C:0190H         LINE#         60
+  C:0193H         LINE#         61
+  C:0195H         LINE#         62
+  C:0197H         LINE#         63
+  -------         ENDPROC       TIMER1INIT
+  -------         PROC          L?0029
+  -------         ENDPROC       L?0029
+  -------         PROC          DELAY1S
+  -------         DO            
+  D:0005H         SYMBOL        a
+  D:0006H         SYMBOL        b
+  D:0007H         SYMBOL        c
+  -------         ENDDO         
+  C:016BH         LINE#         66
+  C:016BH         LINE#         67
+  C:016BH         LINE#         69
+  C:016DH         LINE#         70
+  C:016FH         LINE#         71
+  C:0177H         LINE#         72
+  C:0178H         LINE#         73
+  -------         ENDPROC       DELAY1S
+  -------         PROC          GOFORWARD
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/02/2023  09:15:32  PAGE 4
+
+
+  C:01A4H         LINE#         98
+  C:01A4H         LINE#         99
+  C:01A4H         LINE#         100
+  C:01A6H         LINE#         101
+  C:01A8H         LINE#         102
+  -------         ENDPROC       GOFORWARD
+  -------         PROC          GOSTOP
+  C:01A9H         LINE#         104
+  C:01A9H         LINE#         105
+  C:01A9H         LINE#         106
+  C:01ABH         LINE#         107
+  C:01ADH         LINE#         108
+  -------         ENDPROC       GOSTOP
+  -------         PROC          GOFORWARDUP
+  C:0003H         LINE#         110
+  C:0003H         LINE#         111
+  C:0003H         LINE#         112
+  C:0006H         LINE#         113
+  C:0009H         LINE#         114
+  -------         ENDPROC       GOFORWARDUP
+  -------         PROC          MAIN
+  C:0140H         LINE#         116
+  C:0140H         LINE#         117
+  C:0140H         LINE#         118
+  C:0143H         LINE#         119
+  C:0146H         LINE#         120
+  C:0146H         LINE#         121
+  C:0149H         LINE#         122
+  C:014CH         LINE#         123
+  C:014FH         LINE#         124
+  C:0150H         LINE#         125
+  C:0150H         LINE#         126
+  C:0153H         LINE#         127
+  C:0156H         LINE#         128
+  C:0156H         LINE#         129
+  C:0156H         LINE#         130
+  C:0159H         LINE#         131
+  C:015CH         LINE#         132
+  C:015EH         LINE#         133
+  C:0161H         LINE#         134
+  C:0164H         LINE#         135
+  -------         ENDPROC       MAIN
+  -------         PROC          TIME1HANDLER
+  C:009AH         LINE#         138
+  C:00A7H         LINE#         140
+  C:00AFH         LINE#         141
+  C:00B7H         LINE#         142
+  C:00BAH         LINE#         143
+  C:00BDH         LINE#         144
+  C:00E9H         LINE#         145
+  C:00E9H         LINE#         146
+  C:00ECH         LINE#         147
+  C:00EEH         LINE#         148
+  C:00F1H         LINE#         149
+  C:00F1H         LINE#         150
+  C:0101H         LINE#         151
+  C:0105H         LINE#         152
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/02/2023  09:15:32  PAGE 5
+
+
+  C:0109H         LINE#         153
+  C:0109H         LINE#         154
+  -------         ENDPROC       TIME1HANDLER
+  -------         ENDMOD        CARANGLE
+
+*** WARNING L5: CODE SPACE MEMORY OVERLAP
+    FROM:    000BH
+    TO:      000DH
+
+Program Size: data=17.0 xdata=0 code=432
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

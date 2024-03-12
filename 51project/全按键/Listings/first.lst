@@ -1,0 +1,320 @@
+C51 COMPILER V9.54   FIRST                                                                 04/12/2023 20:16:15 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE FIRST
+OBJECT MODULE PLACED IN .\Objects\first.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE first.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\first
+                    -.lst) TABS(2) OBJECT(.\Objects\first.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <intrins.h>
+   3          sbit IN1 = P1^1;
+   4          sbit IN2 = P1^2;
+   5          sbit IN3 = P1^3;
+   6          sbit IN4 = P1^4;
+   7          sbit EN1A=P2^1;
+   8          sbit EN2A=P2^2;
+   9          sbit left_light=P1^5;
+  10          sbit middle_light=P1^6;
+  11          sbit right_light=P1^7;
+  12          sbit PWM = P2^0;
+  13          char receiveDate;
+  14          unsigned char counter=0;
+  15          unsigned char compareA,compareB;
+  16          unsigned char count=0;
+  17          unsigned char PWM_count=15;
+  18          
+  19          void Delay1000ms()    //@11.0592MHz
+  20          {
+  21   1        unsigned char i, j, k;
+  22   1      
+  23   1        _nop_();
+  24   1        i = 8;
+  25   1        j = 1;
+  26   1        k = 243;
+  27   1        do
+  28   1        {
+  29   2          do
+  30   2          {
+  31   3            while (--k);
+  32   3          } while (--j);
+  33   2        } while (--i);
+  34   1      }
+  35          
+  36          void Uart_Init()
+  37          {
+  38   1       PCON=0x00;
+  39   1       SCON=0x50;
+  40   1       TMOD |= 0x20;
+  41   1       TL1 = 0xFD;
+  42   1       TH1 = 0xFD;
+  43   1        ET1=0;
+  44   1       TR1 = 1;
+  45   1       EA = 1;
+  46   1       ES = 1;   
+  47   1      }
+  48          void delay_ms(unsigned int n)
+  49          {
+  50   1          unsigned int i,y;
+  51   1          for(i=n;i>0;i--)
+  52   1              for(y=114;y>0;y--);
+  53   1      }
+  54          void Timer0Init()
+C51 COMPILER V9.54   FIRST                                                                 04/12/2023 20:16:15 PAGE 2   
+
+  55          {
+  56   1        TMOD |= 0x01;
+  57   1        TL0 = 0xA4; 
+  58   1        TH0 = 0xFF; 
+  59   1        TF0 = 0;
+  60   1        EA=1;
+  61   1        ET0=1;
+  62   1        TR0 = 1;
+  63   1      }
+  64          void carlm_go()           //左电机直行
+  65          {
+  66   1        IN1=1;
+  67   1        IN2=0;
+  68   1      }
+  69          void carrm_go()           //右电机直行
+  70          {
+  71   1        IN3=0;
+  72   1        IN4=1;
+  73   1      }
+  74          void carlm_back()         //左电机后退
+  75          {
+  76   1        IN1=0;
+  77   1        IN2=1;
+  78   1      }
+  79          void carrm_back()          //右电机后退
+  80          {
+  81   1        IN3=1;
+  82   1        IN4=0;
+  83   1      }
+  84          void carlm_stop()          //左电机停止
+  85          {
+  86   1        IN1=0;
+  87   1        IN2=0;
+  88   1      }
+  89          void carrm_stop()          //右电机停止
+  90          {
+  91   1        IN3=0;
+  92   1        IN4=0;
+  93   1      }
+  94          void car_go()              //小车前进
+  95          {
+  96   1      PWM_count=15;
+  97   1      compareB=80;
+  98   1      compareA=80;
+  99   1      carlm_go();
+ 100   1      carrm_go();
+ 101   1      }
+ 102          void car_stop()            //小车停止
+ 103          {
+ 104   1      PWM_count=15;
+ 105   1      compareB=80;
+ 106   1      compareA=80;
+ 107   1      carlm_stop();
+ 108   1      carrm_stop();
+ 109   1      }
+ 110          void car_back()            //小车后退
+ 111          {
+ 112   1      PWM_count=15;
+ 113   1      compareB=80;
+ 114   1      compareA=80;
+ 115   1      carlm_back();
+ 116   1      carrm_back();
+C51 COMPILER V9.54   FIRST                                                                 04/12/2023 20:16:15 PAGE 3   
+
+ 117   1      }
+ 118          void car_goright()         //小车前右
+ 119          {
+ 120   1      PWM_count=17;
+ 121   1      compareB=80;
+ 122   1      compareA=80;
+ 123   1      carlm_go();
+ 124   1      carrm_go();
+ 125   1      }
+ 126          void car_goleft()          //小车前左
+ 127          {
+ 128   1      PWM_count=13;
+ 129   1      compareB=80;
+ 130   1      compareA=80;
+ 131   1      carlm_go();
+ 132   1      carrm_go();}
+ 133          void car_inplaceleft()     //小车原地左
+ 134          {
+ 135   1      PWM_count=11;
+ 136   1      compareB=80;
+ 137   1      compareA=40;
+ 138   1      carlm_go();
+ 139   1      carrm_go();
+ 140   1      }
+ 141          void car_inplaceright()    //小车原地右
+ 142          {
+ 143   1      PWM_count=14;
+ 144   1      compareB=40;
+ 145   1      compareA=80;
+ 146   1      carlm_go();
+ 147   1      carrm_go();
+ 148   1      }
+ 149          void Infrared_tracking()    //红外循迹模块
+ 150          { 
+ 151   1        if(left_light==1&&middle_light==1&&right_light==1)//全黑
+ 152   1        {
+ 153   2          car_go();
+ 154   2        }
+ 155   1        if(left_light==0&&middle_light==1&&right_light==0)//直线
+ 156   1        {
+ 157   2          car_go();
+ 158   2        }
+ 159   1        if(left_light==1&&middle_light==0&&right_light==0)//大右转
+ 160   1        {
+ 161   2          car_inplaceright();
+ 162   2            if(left_light==0&&middle_light==1&&right_light==0)
+ 163   2            {
+ 164   3            car_go();
+ 165   3            }
+ 166   2        }
+ 167   1      
+ 168   1        if(left_light==0&&middle_light==0&&right_light==1)//大左转
+ 169   1        { 
+ 170   2          car_inplaceleft();
+ 171   2            if(left_light==0&&middle_light==1&&right_light==0)
+ 172   2            {
+ 173   3            car_go();
+ 174   3            }
+ 175   2        }
+ 176   1        if(left_light==1&&middle_light==1&&right_light==0)//左
+ 177   1        {
+ 178   2          car_goleft();
+C51 COMPILER V9.54   FIRST                                                                 04/12/2023 20:16:15 PAGE 4   
+
+ 179   2          if(left_light==0&&middle_light==1&&right_light==0)
+ 180   2          {
+ 181   3            car_go();
+ 182   3          }
+ 183   2      
+ 184   2        }
+ 185   1        if(left_light==0&&middle_light==1&&right_light==1)//右
+ 186   1        {
+ 187   2          car_goright();
+ 188   2          if(left_light==0&&middle_light==0&&right_light==0)
+ 189   2          {
+ 190   3            car_go();
+ 191   3          }
+ 192   2        }
+ 193   1      
+ 194   1      }
+ 195          
+ 196          
+ 197          void main()
+ 198          { 
+ 199   1        Uart_Init();
+ 200   1        Timer0Init();
+ 201   1        while(1)
+ 202   1        {
+ 203   2        if(receiveDate==1)
+ 204   2        {
+ 205   3        car_go();
+ 206   3        }
+ 207   2        if(receiveDate==2)
+ 208   2        {
+ 209   3        car_back();
+ 210   3        }
+ 211   2        if(receiveDate==3)
+ 212   2        {
+ 213   3        car_stop();
+ 214   3        }
+ 215   2        if(receiveDate==4)
+ 216   2        {
+ 217   3        car_inplaceleft();
+ 218   3        }
+ 219   2        if(receiveDate==5)
+ 220   2        {
+ 221   3        car_inplaceright();
+ 222   3        }
+ 223   2        if(receiveDate==6)
+ 224   2        {
+ 225   3        car_goleft();
+ 226   3        }
+ 227   2        if(receiveDate==7)
+ 228   2        {
+ 229   3        car_goright();
+ 230   3        }
+ 231   2        }
+ 232   1      }
+ 233          void Timer0_Routine() interrupt 1
+ 234          {
+ 235   1        TL0=0xA4;
+ 236   1        TH0=0xFF;
+ 237   1        compareA=90;
+ 238   1        compareB=90;
+ 239   1        counter++;
+ 240   1        if(counter>=100)
+C51 COMPILER V9.54   FIRST                                                                 04/12/2023 20:16:15 PAGE 5   
+
+ 241   1        {
+ 242   2         counter=0;
+ 243   2        }
+ 244   1        if(counter<compareA)
+ 245   1        {
+ 246   2          EN1A=1;
+ 247   2      
+ 248   2        }
+ 249   1        else
+ 250   1        {
+ 251   2          EN1A=0;
+ 252   2      
+ 253   2        }
+ 254   1        if(counter<compareB)
+ 255   1        {
+ 256   2          EN2A=1;
+ 257   2      
+ 258   2        }
+ 259   1        else
+ 260   1        {
+ 261   2          EN2A=0;
+ 262   2        }
+ 263   1        count++;
+ 264   1        count%=200;
+ 265   1        if(count <PWM_count) 
+ 266   1        { 
+ 267   2          PWM = 1; 
+ 268   2        }
+ 269   1        else 
+ 270   1        { 
+ 271   2          PWM = 0; 
+ 272   2        }
+ 273   1        
+ 274   1      }
+ 275          void Uart_Routine() interrupt 4
+ 276          { 
+ 277   1        if(RI)
+ 278   1        {
+ 279   2        car_stop();
+ 280   2        receiveDate=SBUF;
+ 281   2        SBUF=receiveDate;
+ 282   2        RI=0;
+ 283   2        }
+ 284   1        if(TI)
+ 285   1        {
+ 286   2        TI=0;
+ 287   2        }
+ 288   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    501    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\carone.obj" 
+TO ".\Objects\017" 
+PRINT(".\Listings\017.m51") RAMSIZE(256) 

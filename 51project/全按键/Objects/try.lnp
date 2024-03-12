@@ -1,0 +1,3 @@
+".\Objects\first.obj" 
+TO ".\Objects\try" 
+PRINT(".\Listings\try.m51") RAMSIZE(256) 

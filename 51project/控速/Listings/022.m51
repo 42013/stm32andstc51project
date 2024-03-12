@@ -1,0 +1,206 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/04/2023  19:56:58  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\speedcontrol.obj TO .\Objects\022 PRINT (.\Listings\022.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\speedcontrol.obj (SPEEDCONTROL)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\022 (SPEEDCONTROL)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         ?DT?SPEEDCONTROL
+            IDATA   000EH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0008H     UNIT         ?PR?MAIN?SPEEDCONTROL
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     007AH     UNIT         ?PR?TIME1HANDLER?SPEEDCONTROL
+            CODE    0114H     0039H     UNIT         ?PR?KEYSCAN?SPEEDCONTROL
+            CODE    014DH     0014H     UNIT         ?PR?_DELAY?SPEEDCONTROL
+            CODE    0161H     000EH     UNIT         ?PR?TIMER1INIT?SPEEDCONTROL
+            CODE    016FH     0009H     UNIT         ?PR?GOFORWARD?SPEEDCONTROL
+            CODE    0178H     0009H     UNIT         ?PR?GOSTOP?SPEEDCONTROL
+            CODE    0181H     0009H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\022 (SPEEDCONTROL)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIME1HANDLER?SPEEDCONTROL
+  +--> ?PR?GOFORWARD?SPEEDCONTROL
+  +--> ?PR?GOSTOP?SPEEDCONTROL
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?SPEEDCONTROL
+  +--> ?C_INITSEG
+
+?PR?MAIN?SPEEDCONTROL
+  +--> ?PR?TIMER1INIT?SPEEDCONTROL
+  +--> ?PR?KEYSCAN?SPEEDCONTROL
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/04/2023  19:56:58  PAGE 2
+
+
+
+?PR?KEYSCAN?SPEEDCONTROL
+  +--> ?PR?_DELAY?SPEEDCONTROL
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\022 (SPEEDCONTROL)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SPEEDCONTROL
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:009AH         PUBLIC        Time1Handler
+  D:00A8H         PUBLIC        IE
+  C:014DH         PUBLIC        _delay
+  D:00B8H         PUBLIC        IP
+  B:00B0H.1       PUBLIC        k1
+  B:00B0H.0       PUBLIC        k2
+  C:0178H         PUBLIC        gostop
+  C:0003H         PUBLIC        main
+  C:016FH         PUBLIC        goForward
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        rightspeed
+  D:0009H         PUBLIC        leftspeed
+  D:000AH         PUBLIC        cntRight
+  B:0090H.1       PUBLIC        IN1
+  B:0090H.2       PUBLIC        IN2
+  B:0090H.3       PUBLIC        IN3
+  B:0090H.4       PUBLIC        IN4
+  B:0088H.7       PUBLIC        TF1
+  C:0161H         PUBLIC        Timer1Init
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  D:000CH         PUBLIC        cntLeft
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  C:0114H         PUBLIC        keyscan
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          GOFORWARD
+  C:016FH         LINE#         14
+  C:016FH         LINE#         15
+  C:016FH         LINE#         16
+  C:0173H         LINE#         17
+  C:0177H         LINE#         18
+  -------         ENDPROC       GOFORWARD
+  -------         PROC          GOSTOP
+  C:0178H         LINE#         20
+  C:0178H         LINE#         21
+  C:0178H         LINE#         22
+  C:017CH         LINE#         23
+  C:0180H         LINE#         24
+  -------         ENDPROC       GOSTOP
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/04/2023  19:56:58  PAGE 3
+
+
+  -------         PROC          TIMER1INIT
+  C:0161H         LINE#         25
+  C:0161H         LINE#         26
+  C:0161H         LINE#         27
+  C:0164H         LINE#         28
+  C:0167H         LINE#         29
+  C:016AH         LINE#         30
+  C:016CH         LINE#         31
+  C:016EH         LINE#         32
+  -------         ENDPROC       TIMER1INIT
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:014DH         LINE#         33
+  C:014DH         LINE#         34
+  C:014DH         LINE#         36
+  C:0157H         LINE#         37
+  C:0157H         LINE#         38
+  C:0158H         LINE#         39
+  C:015AH         LINE#         40
+  C:0160H         LINE#         42
+  -------         ENDPROC       _DELAY
+  -------         PROC          KEYSCAN
+  C:0114H         LINE#         43
+  C:0114H         LINE#         44
+  C:0114H         LINE#         45
+  C:0117H         LINE#         46
+  C:0117H         LINE#         47
+  C:011AH         LINE#         48
+  C:0121H         LINE#         49
+  C:0121H         LINE#         50
+  C:0127H         LINE#         51
+  C:012DH         LINE#         52
+  C:012DH         LINE#         53
+  C:0130H         LINE#         54
+  C:0130H         LINE#         55
+  C:0133H         LINE#         56
+  C:0133H         LINE#         57
+  C:0136H         LINE#         58
+  C:013DH         LINE#         59
+  C:013DH         LINE#         60
+  C:0143H         LINE#         61
+  C:0149H         LINE#         62
+  C:0149H         LINE#         63
+  C:014CH         LINE#         64
+  C:014CH         LINE#         65
+  -------         ENDPROC       KEYSCAN
+  -------         PROC          MAIN
+  C:0003H         LINE#         66
+  C:0003H         LINE#         67
+  C:0003H         LINE#         68
+  C:0006H         LINE#         69
+  C:0006H         LINE#         70
+  C:0009H         LINE#         71
+  -------         ENDPROC       MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/04/2023  19:56:58  PAGE 4
+
+
+  -------         PROC          TIME1HANDLER
+  C:009AH         LINE#         74
+  C:00A7H         LINE#         76
+  C:00AFH         LINE#         77
+  C:00B7H         LINE#         78
+  C:00BAH         LINE#         79
+  C:00BDH         LINE#         80
+  C:00E9H         LINE#         81
+  C:00E9H         LINE#         82
+  C:00ECH         LINE#         83
+  C:00EEH         LINE#         84
+  C:00F1H         LINE#         85
+  C:00F1H         LINE#         86
+  C:0101H         LINE#         87
+  C:0105H         LINE#         88
+  C:0109H         LINE#         89
+  C:0109H         LINE#         90
+  -------         ENDPROC       TIME1HANDLER
+  -------         ENDMOD        SPEEDCONTROL
+
+Program Size: data=15.0 xdata=0 code=394
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

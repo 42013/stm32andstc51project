@@ -1,0 +1,183 @@
+C51 COMPILER V9.54   CARANGLE                                                              04/02/2023 09:15:32 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE CARANGLE
+OBJECT MODULE PLACED IN .\Objects\carangle.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE carangle.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ca
+                    -rangle.lst) TABS(2) OBJECT(.\Objects\carangle.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include <intrins.h> 
+   3          
+   4          sbit left_con1A = P1^1;
+   5          sbit right_con1A = P1^3;
+   6          sfr AUXR=0x80;
+   7          sbit PWM = P3^7;  //设定PWM输出的I/O端口
+   8          
+   9          unsigned char count = 0;
+  10          unsigned char timer1 ;
+  11          char leftSpeed;
+  12          char rightSpeed;
+  13          int cntLeft = 0;
+  14          int cntRight = 0;
+  15          
+  16          /*
+  17          对于180°舵机
+  18          t = 0.5ms——————-舵机会转动 0 ° 
+  19          t = 1.0ms——————-舵机会转动 45°
+  20          t = 1.5ms——————-舵机会转动 90°
+  21          t = 2.0ms——————-舵机会转动 135°
+  22          t = 2.5ms——————-舵机会转动180
+  23          */
+  24          
+  25          void Timer0_Init()    //100微秒@12.000MHz
+  26          {
+  27   1        AUXR |= 0x80;   //定时器时钟1T模式
+  28   1        TMOD &= 0xF0;   //设置定时器模式
+  29   1        TL0 = 0x50;   //设置定时初值
+  30   1        TH0 = 0xFB;   //设置定时初值
+  31   1        TF0 = 0;    //清除TF0标志
+  32   1        TR0 = 1;    //定时器0开始计时
+  33   1      }
+  34          void Time0Init() interrupt 1 
+  35          {
+  36   1        TR0 = 0; 
+  37   1        TL0 = 0x50;   //设置定时初值
+  38   1        TH0 = 0xFB;   //设置定时初值
+  39   1        if(count <= timer1) //5==0° 15==90°
+  40   1        { 
+  41   2          PWM = 1; 
+  42   2        }
+  43   1        else 
+  44   1        { 
+  45   2          PWM = 0; 
+  46   2        }
+  47   1        count++;
+  48   1        if (count >= 200) //T = 20ms清零
+  49   1        { 
+  50   2       
+  51   2          count = 0; 
+  52   2        }
+  53   1        TR0 = 1; //开启T0
+  54   1      }
+C51 COMPILER V9.54   CARANGLE                                                              04/02/2023 09:15:32 PAGE 2   
+
+  55          
+  56           void Timer1Init()    //100微秒@12.000MHz
+  57          {
+  58   1        TMOD &= 0x0F;   //设置定时器模式
+  59   1        TL1 = 0x50;   //设置定时初值
+  60   1        TH1 = 0xFB;   //设置定时初值
+  61   1        TF1 = 0;     //清除TF1标志
+  62   1        TR1 = 1;    //定时器1开始计时
+  63   1      }
+  64          
+  65          /*延时程序*/
+  66          void delay1s(void)   //误差 0us
+  67          {
+  68   1          unsigned char a,b,c;
+  69   1          for(c=167;c>0;c--)
+  70   1              for(b=171;b>0;b--)
+  71   1                  for(a=16;a>0;a--);
+  72   1          _nop_();  //if Keil,require use intrins.h
+  73   1      }
+  74          /* void delay(unsigned int xms)   //@12.000MHz
+  75          { 
+  76            unsigned char i;
+  77            while(xms--)
+  78            {
+  79            _nop_();
+  80            i = 2;
+  81            while (--i);
+  82            }
+  83          }*/
+  84          
+  85          /*定时器T0初始化*/
+  86          /*void Timer0_Init()           
+  87          {
+  88              TMOD &= 0x00;
+  89              TMOD |= 0x01; //定时器T0设置成方式1
+  90           
+  91              TH0 = 0xff;   //定时常数 0.1ms 晶振为11.0592MHz
+  92              TL0 = 0xa4;
+  93           
+  94              ET0 = 1;      
+  95              TR0 = 1; 
+  96            EA=1; 
+  97            }*/
+  98          void goForward()
+  99          {
+ 100   1        left_con1A = 1;
+ 101   1        right_con1A = 1;
+ 102   1      }
+ 103          
+ 104          void gostop()
+ 105          {
+ 106   1        left_con1A = 0;
+ 107   1        right_con1A = 0;
+ 108   1      }
+ 109          
+ 110           void goForwardup()
+ 111          {
+ 112   1        leftSpeed = 20;
+ 113   1        rightSpeed = 20;
+ 114   1      }
+ 115          
+ 116          void main()
+C51 COMPILER V9.54   CARANGLE                                                              04/02/2023 09:15:32 PAGE 3   
+
+ 117          {
+ 118   1        Timer0_Init();
+ 119   1        Timer1Init();
+ 120   1        while(1){
+ 121   2          goForwardup();
+ 122   2          delay1s();
+ 123   2          timer1 =10;//舵机旋转45°
+ 124   2          count=0;
+ 125   2          goForwardup();
+ 126   2          delay1s();
+ 127   2          timer1 =20;//舵机旋转135°
+ 128   2          count=0;//让定时器重新计数
+ 129   2          goForwardup();
+ 130   2          delay1s();
+ 131   2          timer1 =5;//舵机恢复到0°的位置
+ 132   2          count=0;//让定时器重新计数
+ 133   2          gostop();
+ 134   2          delay1s();
+ 135   2        }
+ 136   1      }
+ 137          
+ 138          void Time1Handler() interrupt 1
+ 139          {
+ 140   1        cntLeft++;
+ 141   1        cntRight++;
+ 142   1        TL1 = 0x50;   //设置定时初值
+ 143   1        TH1 = 0xFB;   //设置定时初值
+ 144   1        if(cntLeft < leftSpeed&&cntRight < rightSpeed)
+ 145   1        {
+ 146   2          goForward();
+ 147   2        }else{
+ 148   2          gostop();
+ 149   2        }
+ 150   1        if(cntLeft == 20&&cntRight == 20){
+ 151   2          cntLeft = 0;
+ 152   2          cntRight = 0;
+ 153   2        }
+ 154   1      }
+ 155           
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    271    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

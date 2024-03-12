@@ -1,0 +1,115 @@
+C51 COMPILER V9.54   RED                                                                   04/04/2023 22:00:39 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE RED
+OBJECT MODULE PLACED IN .\Objects\red.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE red.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\red.lst
+                    -) TABS(2) OBJECT(.\Objects\red.obj)
+
+line level    source
+
+   1          //
+   2           
+   3          #include <reg52.h>
+   4          #define uint  unsigned int
+   5          #define uchar unsigned char
+   6            
+   7           
+   8          sbit IR = P3^2;
+   9          unsigned char Time_width;
+  10          unsigned char Ir_Value[4];
+  11          //
+  12          void DelayMs(unsigned int x) //延迟大约0.1ms 或 100us
+  13          {
+  14   1        unsigned char y;
+  15   1        while(x--)
+  16   1        {
+  17   2          for (y=0;y<8;y++);
+  18   2        }
+  19   1      }
+  20          //
+  21          void main()
+  22          {
+  23   1        EA = 1;
+  24   1        IT0 = 1;
+  25   1        EX0 = 1;
+  26   1      //  IR = 1;
+  27   1        while(1)
+  28   1        {
+  29   2          P2 = Ir_Value[3 ];
+  30   2        }
+  31   1      }
+  32          void Read_Ir() interrupt 0   //外部中断0
+  33          {
+  34   1        unsigned char i,j,count;
+  35   1        Time_width = 0;
+  36   1        EX0 = 0;   //关闭中断防止干扰
+  37   1        if(IR==0) //判断是否是正确的信号，排除干扰
+  38   1        {
+  39   2          count=95; //90 * 0.1ms = 9ms,超过说明接收到错误的信号
+  40   2          while((IR==0)&&(count>0)) //等待9ms的低电平过去 
+  41   2          {
+  42   3            DelayMs(1);
+  43   3            count--;
+  44   3          }
+  45   2          if(IR==1) //9ms低电平已过去
+  46   2          {
+  47   3            count=50;  // 45 * 0.1ms = 4.5ms
+  48   3            while((IR==1)&&(count>0)) //等待4.5ms的高电平过去
+  49   3            {
+  50   4              DelayMs(1);
+  51   4              count--;
+  52   4            }
+  53   3            for(i=0;i<4;i++) //共有4组数据
+  54   3            {
+C51 COMPILER V9.54   RED                                                                   04/04/2023 22:00:39 PAGE 2   
+
+  55   4              for(j=0;j<8;j++) //接收一组数据
+  56   4              {
+  57   5                count=6;   //6*0.1ms=0.6ms=600us
+  58   5                while((IR==0)&&(count>0))//等待560us低电平过去
+  59   5                {
+  60   6                  DelayMs(1);
+  61   6                  count--;
+  62   6                }
+  63   5                count=55;    //50*0.1ms=5ms
+  64   5                while((IR==1)&&(count>0)) //计算高电平的时间宽度
+  65   5                {
+  66   6                  DelayMs(1);   //2.24ms/0.1ms=23
+  67   6                  Time_width++; //最长计算到23  55-23=32
+  68   6                  count--;
+  69   6                  if(Time_width>35)   //20*0.1=2.8ms>2.24ms
+  70   6                  {                   //说明已经超出信号范围
+  71   7                    EX0=1;  //打开外部中断
+  72   7                    return; //错误则直接结束中断
+  73   7                  }
+  74   6                }
+  75   5                Ir_Value[i]>>=1; //i表示第几组数据
+  76   5                if(Time_width>=8) //如果高电平大于1.12ms，
+  77   5                {                 //那么是1，否则默认为0，直接移位
+  78   6                  Ir_Value[i]|=0x80;
+  79   6                }
+  80   5                Time_width=0; //用完要清零
+  81   5              }
+  82   4            }
+  83   3          }
+  84   2          if(Ir_Value[2] != ~Ir_Value[3]){return;}  //错误则重新开始，退出中断
+  85   2        }
+  86   1        EX0 = 1;  //接收完毕，打开中断
+  87   1      }
+  88           
+  89          //
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    230    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

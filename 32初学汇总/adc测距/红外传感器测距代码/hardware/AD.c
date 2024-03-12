@@ -1,0 +1,66 @@
+#include "stm32f10x.h"                  // Device header
+#include "Delay.h"
+#include "serial.h"
+#include "AD.h"
+
+
+void AD_Init(void)
+{
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	
+	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+	
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	ADC_InitTypeDef ADC_InitStructure;
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;//单ADC
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;//对齐方式
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;//内部软件触发
+	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;//DISABLE单次触发，ENABLE多次触发
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1, &ADC_InitStructure);
+	
+	ADC_Cmd(ADC1, ENABLE);
+	
+	ADC_ResetCalibration(ADC1);
+	while (ADC_GetResetCalibrationStatus(ADC1) == SET);
+	ADC_StartCalibration(ADC1);
+	while (ADC_GetCalibrationStatus(ADC1) == SET);
+}
+
+uint16_t AD_GetValue(uint8_t ADC_Channel)
+{
+	ADC_RegularChannelConfig(ADC1, ADC_Channel, 1, ADC_SampleTime_55Cycles5);
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+	return ADC_GetConversionValue(ADC1);
+}
+
+float ShuiWeiSensor_Get_Val(void)
+{
+	u32 temp_val=0;
+	float distemp=1.0;
+	u8 t;
+	for(t=0;t<Adc3IN11SHUIWEI_READ_TIMES;t++)
+	{
+		temp_val+=AD_GetValue(ADC_Channel_0);	//读取ADC值,通道0
+		Delay_ms(5);
+	}
+	temp_val/=Adc3IN11SHUIWEI_READ_TIMES;//得到平均值,这个是平均的ADC，
+	//printf("average_val=%d\r\n",temp_val);
+	distemp=temp_val*3.3/4095;
+	//printf("****voltage= %f\r\n",distemp);//电压值
+	//电压对应距离
+	distemp=(-13.2*distemp*distemp*distemp)+72.84*distemp*distemp-140*distemp+107.12;
+  return distemp;
+//	if(temp_val>4000)temp_val=4000;
+//	//简单量化后，处理成 0~100 的光强值。0 对应最暗，100 对应最亮
+//	return (u8)(100-(temp_val/40));
+}
+

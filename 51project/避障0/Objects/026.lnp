@@ -1,0 +1,4 @@
+".\Objects\avoid.obj",
+".\Objects\1111.obj" 
+TO ".\Objects\026" 
+PRINT(".\Listings\026.m51") RAMSIZE(256) 

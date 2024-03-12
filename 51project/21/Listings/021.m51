@@ -1,0 +1,176 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/04/2023  22:00:39  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\red.obj TO .\Objects\021 PRINT (.\Listings\021.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\red.obj (RED)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\021 (RED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?RED
+            DATA    000DH     0002H     UNIT         _DATA_GROUP_
+            IDATA   000FH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     00C1H     UNIT         ?PR?READ_IR?RED
+            CODE    00C7H     001AH     UNIT         ?PR?_DELAYMS?RED
+            CODE    00E1H     000CH     UNIT         ?C_C51STARTUP
+            CODE    00EDH     000BH     UNIT         ?PR?MAIN?RED
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\021 (RED)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?PR?READ_IR?RED                000DH    0002H
+  +--> ?PR?_DELAYMS?RED
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?RED
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\021 (RED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        RED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/04/2023  22:00:39  PAGE 2
+
+
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        Time_width
+  D:00B8H         PUBLIC        IP
+  C:0006H         PUBLIC        Read_Ir
+  B:00B0H.2       PUBLIC        IR
+  D:0009H         PUBLIC        Ir_Value
+  C:00EDH         PUBLIC        main
+  C:00CBH         PUBLIC        _DelayMs
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  B:00A8H.0       PUBLIC        EX0
+  B:0088H.0       PUBLIC        IT0
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  C:00C7H         SYMBOL        L?0032
+  -------         PROC          L?0031
+  -------         ENDPROC       L?0031
+  C:00C7H         SYMBOL        L?0032
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        x
+  -------         DO            
+  D:0005H         SYMBOL        y
+  -------         ENDDO         
+  C:00CBH         LINE#         12
+  C:00CBH         LINE#         13
+  C:00CBH         LINE#         15
+  C:00D5H         LINE#         16
+  C:00D5H         LINE#         17
+  C:00E0H         LINE#         18
+  C:00E0H         LINE#         19
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          MAIN
+  C:00EDH         LINE#         21
+  C:00EDH         LINE#         22
+  C:00EDH         LINE#         23
+  C:00EFH         LINE#         24
+  C:00F1H         LINE#         25
+  C:00F3H         LINE#         27
+  C:00F3H         LINE#         28
+  C:00F3H         LINE#         29
+  C:00F6H         LINE#         30
+  -------         ENDPROC       MAIN
+  -------         PROC          READ_IR
+  -------         DO            
+  D:000DH         SYMBOL        i
+  D:000EH         SYMBOL        j
+  D:0004H         SYMBOL        count
+  -------         ENDDO         
+  C:0006H         LINE#         32
+  C:0019H         LINE#         35
+  C:001CH         LINE#         36
+  C:001EH         LINE#         37
+  C:0024H         LINE#         38
+  C:0024H         LINE#         39
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/04/2023  22:00:39  PAGE 3
+
+
+  C:0026H         LINE#         40
+  C:002FH         LINE#         41
+  C:002FH         LINE#         42
+  C:0032H         LINE#         43
+  C:0033H         LINE#         44
+  C:0035H         LINE#         45
+  C:0038H         LINE#         46
+  C:0038H         LINE#         47
+  C:003AH         LINE#         48
+  C:0043H         LINE#         49
+  C:0043H         LINE#         50
+  C:0046H         LINE#         51
+  C:0047H         LINE#         52
+  C:0049H         LINE#         53
+  C:004CH         LINE#         54
+  C:004CH         LINE#         55
+  C:004FH         LINE#         56
+  C:004FH         LINE#         57
+  C:0051H         LINE#         58
+  C:005AH         LINE#         59
+  C:005AH         LINE#         60
+  C:005DH         LINE#         61
+  C:005EH         LINE#         62
+  C:0060H         LINE#         63
+  C:0062H         LINE#         64
+  C:006BH         LINE#         65
+  C:006BH         LINE#         66
+  C:006EH         LINE#         67
+  C:0070H         LINE#         68
+  C:0071H         LINE#         69
+  C:0078H         LINE#         70
+  C:0078H         LINE#         71
+  C:007CH         LINE#         73
+  C:007CH         LINE#         74
+  C:007CH         LINE#         75
+  C:0089H         LINE#         76
+  C:0090H         LINE#         77
+  C:0090H         LINE#         78
+  C:0099H         LINE#         79
+  C:0099H         LINE#         80
+  C:009CH         LINE#         81
+  C:00A5H         LINE#         82
+  C:00AEH         LINE#         83
+  C:00AEH         LINE#         84
+  C:00B4H         LINE#         85
+  C:00B4H         LINE#         86
+  C:00B6H         LINE#         87
+  -------         ENDPROC       READ_IR
+  -------         ENDMOD        RED
+
+Program Size: data=16.0 xdata=0 code=248
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

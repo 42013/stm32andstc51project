@@ -1,0 +1,3 @@
+".\Objects\FLLOW.obj" 
+TO ".\Objects\023" 
+PRINT(".\Listings\023.m51") RAMSIZE(256) 

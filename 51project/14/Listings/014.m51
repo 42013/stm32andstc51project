@@ -1,0 +1,266 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/27/2023  18:34:40  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\C51\BIN\BL51.EXE .\Objects\BEEP.obj TO .\Objects\014 PRINT (.\Listings\014.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\BEEP.obj (BEEP)
+  D:\KEIL5\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  D:\KEIL5\C51\LIB\C51FPS.LIB (?C?FPCMP)
+  D:\KEIL5\C51\LIB\C51FPS.LIB (?C?FCAST)
+  D:\KEIL5\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C?SLDIV)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C?LNEG)
+  D:\KEIL5\C51\LIB\C51S.LIB (?C?ULDIV)
+
+
+LINK MAP OF MODULE:  .\Objects\014 (BEEP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            DATA    000CH     0002H     UNIT         ?DT?BEEP
+            IDATA   000EH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     02FCH     UNIT         ?C?LIB_CODE
+            CODE    02FFH     0053H     UNIT         ?PR?BEEP_ONE?BEEP
+            CODE    0352H     0046H     UNIT         ?PR?MAIN?BEEP
+            CODE    0398H     0044H     UNIT         ?C?LDIV
+            CODE    03DCH     0028H     UNIT         ?PR?_CONFIGUART?BEEP
+            CODE    0404H     001CH     UNIT         ?PR?BEEP_TWO?BEEP
+            CODE    0420H     0013H     UNIT         ?PR?_SENDSTRING?BEEP
+            CODE    0433H     000CH     UNIT         ?C_C51STARTUP
+            CODE    043FH     000BH     UNIT         ?PR?_DELAY?BEEP
+            CODE    044AH     0008H     UNIT         ?PR?_SENDBYTE?BEEP
+            CODE    0452H     0008H     UNIT         ?CO?BEEP
+            CODE    045AH     0006H     UNIT         ?PR?BUZZER_DELAY?BEEP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\014 (BEEP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?BEEP
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2023  18:34:40  PAGE 2
+
+
+?PR?MAIN?BEEP                  -----    -----
+  +--> ?PR?_DELAY?BEEP
+  +--> ?PR?_CONFIGUART?BEEP
+  +--> ?PR?BEEP_ONE?BEEP
+  +--> ?CO?BEEP
+  +--> ?PR?_SENDSTRING?BEEP
+  +--> ?PR?BEEP_TWO?BEEP
+
+?PR?BEEP_ONE?BEEP              0008H    0004H
+  +--> ?PR?BUZZER_DELAY?BEEP
+
+?PR?_SENDSTRING?BEEP           -----    -----
+  +--> ?PR?_SENDBYTE?BEEP
+
+?PR?BEEP_TWO?BEEP              -----    -----
+  +--> ?PR?_DELAY?BEEP
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\014 (BEEP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        BEEP
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:043FH         PUBLIC        _delay
+  C:03DCH         PUBLIC        _ConfigUART
+  B:00A8H.4       PUBLIC        ES
+  B:00B0H.1       PUBLIC        k1
+  B:00B0H.0       PUBLIC        k2
+  B:0098H.1       PUBLIC        TI
+  B:00A0H.5       PUBLIC        beep
+  C:0352H         PUBLIC        main
+  C:0420H         PUBLIC        _sendString
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:02FFH         PUBLIC        beep_one
+  C:044AH         PUBLIC        _sendByte
+  D:000CH         PUBLIC        RxdByte
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  C:045AH         PUBLIC        Buzzer_Delay
+  C:0404H         PUBLIC        beep_two
+  D:000DH         PUBLIC        receiveData
+  -------         PROC          _CONFIGUART
+  D:0006H         SYMBOL        baud
+  C:03DCH         LINE#         16
+  C:03DCH         LINE#         17
+  C:03DCH         LINE#         18
+  C:03DFH         LINE#         19
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2023  18:34:40  PAGE 3
+
+
+  C:03E2H         LINE#         20
+  C:03E5H         LINE#         21
+  C:03FAH         LINE#         22
+  C:03FDH         LINE#         23
+  C:03FFH         LINE#         24
+  C:0401H         LINE#         25
+  C:0403H         LINE#         26
+  -------         ENDPROC       _CONFIGUART
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        data_msg
+  C:044AH         LINE#         29
+  C:044AH         LINE#         30
+  C:044AH         LINE#         31
+  C:044CH         LINE#         32
+  C:044FH         LINE#         33
+  C:0451H         LINE#         34
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SENDSTRING
+  D:0001H         SYMBOL        str
+  C:0420H         LINE#         36
+  C:0420H         LINE#         37
+  C:0420H         LINE#         38
+  C:0426H         LINE#         39
+  C:0426H         LINE#         40
+  C:0429H         LINE#         41
+  C:0430H         LINE#         42
+  C:0432H         LINE#         43
+  -------         ENDPROC       _SENDSTRING
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:043FH         LINE#         45
+  C:043FH         LINE#         46
+  C:043FH         LINE#         47
+  C:0449H         LINE#         48
+  -------         ENDPROC       _DELAY
+  -------         PROC          BUZZER_DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:045AH         LINE#         50
+  C:045AH         LINE#         51
+  C:045AH         LINE#         53
+  C:045BH         LINE#         54
+  C:045DH         LINE#         55
+  C:045FH         LINE#         56
+  -------         ENDPROC       BUZZER_DELAY
+  -------         PROC          BEEP_ONE
+  -------         DO            
+  D:0008H         SYMBOL        ms
+  D:000AH         SYMBOL        i
+  -------         ENDDO         
+  C:02FFH         LINE#         57
+  C:02FFH         LINE#         58
+  C:02FFH         LINE#         59
+  C:0305H         LINE#         60
+  C:0342H         LINE#         61
+  C:0342H         LINE#         62
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2023  18:34:40  PAGE 4
+
+
+  C:0344H         LINE#         63
+  C:0347H         LINE#         64
+  C:0351H         LINE#         65
+  -------         ENDPROC       BEEP_ONE
+  -------         PROC          BEEP_TWO
+  -------         DO            
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:0404H         LINE#         67
+  C:0404H         LINE#         68
+  C:0404H         LINE#         69
+  C:0408H         LINE#         70
+  C:040AH         LINE#         71
+  C:0414H         LINE#         72
+  C:0414H         LINE#         73
+  C:0416H         LINE#         74
+  C:041DH         LINE#         75
+  C:041FH         LINE#         76
+  -------         ENDPROC       BEEP_TWO
+  -------         PROC          MAIN
+  C:0352H         LINE#         78
+  C:0352H         LINE#         79
+  C:0352H         LINE#         80
+  C:0352H         LINE#         81
+  C:0359H         LINE#         82
+  C:035BH         LINE#         83
+  C:0362H         LINE#         84
+  C:0362H         LINE#         85
+  C:0362H         LINE#         86
+  C:0365H         LINE#         87
+  C:0365H         LINE#         88
+  C:0368H         LINE#         89
+  C:036FH         LINE#         90
+  C:0372H         LINE#         91
+  C:037BH         LINE#         92
+  C:037DH         LINE#         93
+  C:0380H         LINE#         94
+  C:0380H         LINE#         95
+  C:0383H         LINE#         96
+  C:038AH         LINE#         97
+  C:038DH         LINE#         98
+  C:0396H         LINE#         99
+  C:0396H         LINE#         100
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        BEEP
+
+  -------         MODULE        ?C?FPMUL
+  C:0003H         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPCMP
+  C:010BH         PUBLIC        ?C?FPCMP
+  C:0109H         PUBLIC        ?C?FPCMP3
+  -------         ENDMOD        ?C?FPCMP
+
+  -------         MODULE        ?C?FCAST
+  C:018CH         PUBLIC        ?C?FCASTC
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/27/2023  18:34:40  PAGE 5
+
+
+  C:0187H         PUBLIC        ?C?FCASTI
+  C:0182H         PUBLIC        ?C?FCASTL
+  -------         ENDMOD        ?C?FCAST
+
+  -------         MODULE        ?C?CLDPTR
+  C:020AH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?SLDIV
+  C:0398H         PUBLIC        ?C?SLDIV
+  -------         ENDMOD        ?C?SLDIV
+
+  -------         MODULE        ?C?LNEG
+  C:0223H         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+  -------         MODULE        ?C?ULDIV
+  C:026DH         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+Program Size: data=15.0 xdata=0 code=1120
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,24 @@
+C51 COMPILER V9.54   1111                                                                  04/12/2023 21:49:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE 1111
+OBJECT MODULE PLACED IN .\Objects\1111.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE 1111.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\1111.l
+                    -st) OBJECT(.\Objects\1111.obj)
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

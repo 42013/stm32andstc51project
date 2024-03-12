@@ -1,0 +1,3 @@
+".\Objects\progerm.obj" 
+TO ".\Objects\08" 
+PRINT(".\Listings\08.m51") RAMSIZE(256) 

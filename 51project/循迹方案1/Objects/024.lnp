@@ -1,0 +1,3 @@
+".\Objects\fllow.obj" 
+TO ".\Objects\024" 
+PRINT(".\Listings\024.m51") RAMSIZE(256) 

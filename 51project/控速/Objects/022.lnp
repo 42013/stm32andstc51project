@@ -1,0 +1,3 @@
+".\Objects\speedcontrol.obj" 
+TO ".\Objects\022" 
+PRINT(".\Listings\022.m51") RAMSIZE(256) 

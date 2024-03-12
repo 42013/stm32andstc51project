@@ -1,0 +1,3 @@
+".\Objects\NEW.obj" 
+TO ".\Objects\new plan" 
+PRINT(".\Listings\new plan.m51") RAMSIZE(256) 

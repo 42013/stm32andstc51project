@@ -1,0 +1,378 @@
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE NEW
+OBJECT MODULE PLACED IN .\Objects\NEW.obj
+COMPILER INVOKED BY: D:\keil5\C51\BIN\C51.EXE NEW.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\NEW.lst
+                    -) OBJECT(.\Objects\NEW.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include <intrins.h>
+   3           
+   4          sbit IN1 = P1^1;
+   5          sbit IN2 = P1^2;
+   6          sbit IN3 = P1^3;
+   7          sbit IN4 = P1^4;
+   8          sbit ENA        =P2^1;
+   9          sbit ENB        =P2^2;
+  10          sbit left_light = P1^5;
+  11          sbit right_light = P1^6;
+  12          sbit middle_light=P1^7;
+  13          sbit PWM = P2^0;  //设定PWM输出的I/O端口
+  14          sbit xhg=P1^0;
+  15          unsigned char pwm_left_val;
+  16          unsigned char pwm_right_val;
+  17          unsigned char pwm_t;
+  18          unsigned char count=0;
+  19          unsigned char timer1;
+  20          unsigned char receiveDate;
+  21          unsigned int control=155;
+  22          unsigned int normal;
+  23          unsigned int change;
+  24          unsigned int a=0;
+  25          
+  26          /*void Delay1000ms()            //@11.0592MHz
+  27          {
+  28                  unsigned char i, j, k;
+  29           
+  30                  _nop_();
+  31                  i = 8;
+  32                  j = 1;
+  33                  k = 243;
+  34                  do
+  35                  {
+  36                          do
+  37                          {
+  38                                  while (--k);
+  39                          } while (--j);
+  40                  } while (--i);
+  41          }*/
+  42           void delay1s()   //误差 0us
+  43          {
+  44   1          unsigned char a,b,c;
+  45   1          for(c=167;c>0;c--)
+  46   1              for(b=171;b>0;b--)
+  47   1                  for(a=16;a>0;a--);
+  48   1          _nop_();  //if Keil,require use intrins.h
+  49   1      }
+  50          void Timer0_Init()              //100微秒@12.000MHz
+  51          {
+  52   1              TMOD &= 0x00;
+  53   1          TMOD |= 0x01; //定时器T0设置成方式1
+  54   1       
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 2   
+
+  55   1          TH0 = 0xff;   //定时常数 0.1ms 晶振为11.0592MHz
+  56   1          TL0 = 0xa4;
+  57   1       
+  58   1          ET0 = 1;      
+  59   1          TR0 = 1; 
+  60   1              EA=1; 
+  61   1      }
+  62          
+  63           void goForward()
+  64          {
+  65   1                      IN1= 1;  IN2=0;
+  66   1                      IN3 = 0;        IN4=1;
+  67   1              pwm_left_val=normal;
+  68   1              pwm_right_val=normal;
+  69   1              timer1=9;
+  70   1      }
+  71          void godown()
+  72          {
+  73   1              normal=control;
+  74   1                      IN1= 0;  IN2=1;
+  75   1                      IN3 =1; IN4=0;
+  76   1              pwm_left_val=normal;
+  77   1              pwm_right_val=normal;
+  78   1      }
+  79          void gostop()
+  80          {
+  81   1                      IN1= 0;  IN2=0;
+  82   1                      IN3 = 0;        IN4=0;
+  83   1      }
+  84          void go(){
+  85   1              IN1= 1;  IN2=0;
+  86   1                      IN3 = 0;        IN4=1;
+  87   1              normal=control;
+  88   1              pwm_left_val=normal;
+  89   1              pwm_right_val=normal;
+  90   1      }
+  91          void goright(){
+  92   1              IN1= 1;  IN2=0;
+  93   1                      IN3 = 0;        IN4=1;
+  94   1              change=control+20;
+  95   1              normal=control;
+  96   1              pwm_left_val=change;
+  97   1              pwm_right_val=normal;
+  98   1              timer1=10;
+  99   1      }
+ 100          void goleft(){
+ 101   1              //change=control+20;
+ 102   1              //normal=control;
+ 103   1                      IN1= 1;  IN2=0;
+ 104   1                      IN3 = 0;        IN4=1;
+ 105   1              pwm_left_val=normal;
+ 106   1              pwm_right_val=change;
+ 107   1              timer1=11;
+ 108   1      }
+ 109          void putleft(){
+ 110   1              change=control+20;
+ 111   1              normal=control;
+ 112   1                      IN1= 1; IN2=0;
+ 113   1                      IN3 = 0;IN4=1;
+ 114   1              pwm_left_val=change+5;
+ 115   1              pwm_right_val=normal-5;
+ 116   1              timer1=12;
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 3   
+
+ 117   1      }
+ 118          void putright(){
+ 119   1              change=control+20;
+ 120   1              normal=control;
+ 121   1                      IN1= 1;  IN2=0;
+ 122   1                      IN3 = 0;        IN4=1;
+ 123   1              pwm_left_val=normal-5;
+ 124   1              pwm_right_val=change+5;
+ 125   1              timer1=8;
+ 126   1      }
+ 127          void putleft1(){
+ 128   1              change=control+20;
+ 129   1              normal=control;
+ 130   1                      IN1= 1; IN2=0;
+ 131   1                      IN3 = 0;IN4=1;
+ 132   1              pwm_left_val=change+5;
+ 133   1              pwm_right_val=normal-5;
+ 134   1              timer1=12;
+ 135   1      }
+ 136          void putright1(){
+ 137   1              change=control+20;
+ 138   1              normal=control;
+ 139   1                      IN1= 1;  IN2=0;
+ 140   1                      IN3 = 0;        IN4=1;
+ 141   1              pwm_left_val=normal-5;
+ 142   1              pwm_right_val=change+5;
+ 143   1              timer1=8;
+ 144   1      }
+ 145          void moter_add()
+ 146                  {
+ 147   1                              control-=10;
+ 148   1              }
+ 149          void moter_less()
+ 150                  {       
+ 151   1                              control+=10;
+ 152   1              }
+ 153                  
+ 154                  /*void main()        //主函数                             
+ 155          {       
+ 156                  Timer0_Init();
+ 157                  Com_init();//串口初始化和定时器初始化
+ 158                  while(1){ 
+ 159                    if(RI==1){     // 判断是否有数据到来
+ 160                                  receive_data = SBUF; //将收/发数据缓存器SBUF中的数据存入变量
+ 161                              DateCtrl();                  //调用数据处理函数
+ 162                              RI = 0;
+ 163                             }       
+ 164                } 
+ 165                          }*/
+ 166                          void Timer0_Routine() interrupt 1 
+ 167          {
+ 168   1                      TR0=0;
+ 169   1                      TH0 = 0xff;   //定时常数 0.1ms 晶振为11.0592MHz
+ 170   1                      TL0 = 0xa4;
+ 171   1                      pwm_t++; 
+ 172   1                      if(pwm_t==255)
+ 173   1                                      pwm_t=ENA=ENB=0;
+ 174   1                      if(pwm_left_val==pwm_t)
+ 175   1                                      ENA=1;
+ 176   1                      if(pwm_right_val==pwm_t)
+ 177   1                                      ENB=1;
+ 178   1              if(count <= timer1) //5==0° 15==90°
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 4   
+
+ 179   1              { 
+ 180   2                      PWM = 1; 
+ 181   2              }
+ 182   1              else 
+ 183   1              { 
+ 184   2                      PWM = 0; 
+ 185   2              }
+ 186   1              count++;
+ 187   1              if (count >= 200) //T = 20ms清零
+ 188   1              { 
+ 189   2                      count = 0; 
+ 190   2              }
+ 191   1              TR0 = 1; //开启T0
+ 192   1      } 
+ 193          void tracingMode()    
+ 194          {       
+ 195   1              if(xhg==1)     //确定是不是真检测到了
+ 196   1                              {
+ 197   2                              putleft1();
+ 198   2                              delay1s();
+ 199   2                              delay1s();      
+ 200   2                              putright1();
+ 201   2                              delay1s();
+ 202   2                              goForward();
+ 203   2                              } 
+ 204   1              if(left_light==1&&middle_light==1&&right_light==1)//ȫۚ
+ 205   1              {
+ 206   2                      goForward();
+ 207   2              }
+ 208   1              if(left_light==0&&middle_light==1&&right_light==0)//ֱП
+ 209   1              {      
+ 210   2                      goForward();
+ 211   2              }
+ 212   1              if(left_light==1&&middle_light==0&&right_light==0)//ճԒת
+ 213   1              {
+ 214   2                      putright();
+ 215   2                              if(left_light==0&&middle_light==1&&right_light==0)
+ 216   2                              {
+ 217   3                              goForward();
+ 218   3                              }
+ 219   2              }
+ 220   1              if(left_light==0&&middle_light==0&&right_light==1)//ճسת
+ 221   1              {       
+ 222   2                              putleft();
+ 223   2                              if(left_light==0&&middle_light==1&&right_light==0)
+ 224   2                              {
+ 225   3                                      goForward();
+ 226   3                              }
+ 227   2              }
+ 228   1              if(left_light==1&&middle_light==1&&right_light==0)
+ 229   1              {
+ 230   2                              goleft();
+ 231   2                      if(left_light==0&&middle_light==1&&right_light==0)
+ 232   2                      {
+ 233   3                      goForward();
+ 234   3                      }
+ 235   2              }
+ 236   1              if(left_light==0&&middle_light==1&&right_light==1)
+ 237   1              {
+ 238   2                      goright();
+ 239   2                      if(left_light==0&&middle_light==0&&right_light==0)
+ 240   2                      {
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 5   
+
+ 241   3                              goForward();
+ 242   3                      }
+ 243   2              }
+ 244   1      }
+ 245          /*void receive(unsigned char m)
+ 246          {
+ 247          switch(m)
+ 248                          {
+ 249                                  case(0):        gostop();
+ 250                                          break;
+ 251                                  case (1): go();
+ 252                                          break;                  
+ 253                                  case (2):       godown(); 
+ 254                                          break;                                  
+ 255                                  case (3): goleft();
+ 256                                          break;
+ 257                                  case (4): goright();              //right 
+ 258                                          break;  
+ 259                                  case (5): moter_add();
+ 260                                    break;
+ 261                                  case (6): moter_less();
+ 262                                    break;
+ 263                                  case (7): tracingMode();
+ 264                                    break;
+ 265                                  case (8): go(); 
+ 266                                                          left();
+ 267                                                          break;
+ 268                                  case (9): go(); 
+ 269                                                          right();
+ 270                                                          break;  
+ 271                          }
+ 272                  }*/
+ 273                  void Uart_Init()
+ 274          {
+ 275   1               PCON=0x00;
+ 276   1               SCON=0x50;
+ 277   1               TMOD |= 0x20;
+ 278   1              TL1 = 0xFD;             //设定定时初值
+ 279   1              TH1 = 0xFD;             //设定定时器重装值
+ 280   1              ET1=0;
+ 281   1               TR1 = 1;
+ 282   1               EA = 1;
+ 283   1               ES = 1;   
+ 284   1      }
+ 285          void Uart_Routine() interrupt 4
+ 286          { 
+ 287   1              gostop();
+ 288   1              if(RI)
+ 289   1              {
+ 290   2              SBUF=receiveDate;
+ 291   2              receiveDate=SBUF;       
+ 292   2              RI=0;
+ 293   2              }
+ 294   1              if(TI)
+ 295   1              {
+ 296   2              TI=0;
+ 297   2              }
+ 298   1      }
+ 299          void main()
+ 300          {       
+ 301   1              Timer0_Init() ;
+ 302   1              Uart_Init();
+C51 COMPILER V9.54   NEW                                                                   04/26/2023 21:28:05 PAGE 6   
+
+ 303   1              while(1)
+ 304   1              {
+ 305   2              //receive(receiveDate);
+ 306   2              if(a==0){
+ 307   3              tracingMode();
+ 308   3              }
+ 309   2              if(receiveDate==0)
+ 310   2              {
+ 311   3                      gostop();
+ 312   3                      a++;
+ 313   3              }else if(receiveDate==1)
+ 314   2              {
+ 315   3                      go();
+ 316   3                      a++;
+ 317   3              }else if(receiveDate==2)
+ 318   2              {
+ 319   3                      godown();
+ 320   3                      a++;
+ 321   3              }else if(receiveDate==3)
+ 322   2              { 
+ 323   3                      timer1=8;
+ 324   3                      a++;
+ 325   3              }else if(receiveDate==4)
+ 326   2              {
+ 327   3                      timer1=13;
+ 328   3                      a++;
+ 329   3              }else if(receiveDate==5)
+ 330   2              {
+ 331   3              timer1=10;      
+ 332   3              moter_add();
+ 333   3                      a++;
+ 334   3              }else if(receiveDate==6)
+ 335   2              {
+ 336   3                      timer1=10;
+ 337   3                      moter_less();
+ 338   3                      a++;
+ 339   3              }else if(receiveDate==7)
+ 340   2              {
+ 341   3                      a=0;
+ 342   3              }
+ 343   2              }
+ 344   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    765    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
